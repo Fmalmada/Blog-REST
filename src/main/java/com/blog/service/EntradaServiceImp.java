@@ -43,11 +43,9 @@ public class EntradaServiceImp implements EntradaService {
 		return resultado;
 	}
 
-	public ResponseEntity eliminarEntrada(Long id) {
+	public void eliminarEntrada(Long id) {
 		entradasRepo.deleteById(id);
-		
 	}
 
-	
 
 }
