@@ -5,15 +5,15 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.blog.dto.EntradaDTO;
-import com.blog.modelo.Entrada;
+
 
 public interface EntradaService {
 	
 	ResponseEntity<EntradaDTO> crearEntrada(EntradaDTO entradaDTO);
 	
-	Entrada verEntrada(Long id);
+	EntradaDTO verEntrada(Long id);
 	
-	List<Entrada> verEntradas();
+	List<EntradaDTO> verEntradas();
 	
 	void eliminarEntrada(Long id);
 	

@@ -32,15 +32,17 @@ public class EntradaServiceImp implements EntradaService {
 
 	}
 
-	public Entrada verEntrada(Long id) {
+	public EntradaDTO verEntrada(Long id) {
 		Optional<Entrada> entradaOpcional = entradasRepo.findById(id);
-		return entradaOpcional.orElseThrow();
+		return entradaMapper.EntradatoEntradaDTO(entradaOpcional.orElseThrow());
 		
 	}
 
-	public List<Entrada> verEntradas() {
+	public List<EntradaDTO> verEntradas() {
 		List<Entrada> resultado= entradasRepo.findAll();
-		return resultado;
+		return resultado.stream()
+						.map(unaEntrada -> entradaMapper.EntradatoEntradaDTO(unaEntrada))
+						.toList();
 	}
 
 	public void eliminarEntrada(Long id) {

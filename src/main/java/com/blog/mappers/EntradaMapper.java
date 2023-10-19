@@ -1,15 +1,20 @@
 package com.blog.mappers;
 
+
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapping;
 
 import com.blog.dto.EntradaDTO;
 import com.blog.modelo.Entrada;
 
 @Mapper(componentModel = "spring")
 public interface EntradaMapper {
+	@Mapping(target = "fechaLocal", ignore = true)
+	@Mapping(target="id", ignore =true)
 	EntradaDTO EntradatoEntradaDTO(Entrada entrada);
 	
+	@Mapping(target = "fechaLocal", ignore = true)
+	@Mapping(target="id", ignore =true)
 	Entrada EntradaDTOtoEntrada(EntradaDTO entradaDTO);
 
 }
