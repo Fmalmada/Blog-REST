@@ -55,7 +55,7 @@ public class EntradaServiceTest {
 	public void conseguirTodasEntradas() {
 		when(entradasRepo.findAll()).thenReturn(listaEntradas);
 		when(entradaMapper.EntradatoEntradaDTO(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
-		assertEquals(entradasService.verEntradas(),listaEntradasDTO);
+		assertEquals(entradasService.getEntradas(),listaEntradasDTO);
 		
 	}
 	
@@ -63,7 +63,7 @@ public class EntradaServiceTest {
 	public void conseguirEntrada() {
 		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(listaEntradas.get(0)));
 		when(entradaMapper.EntradatoEntradaDTO(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
-		assertEquals(entradasService.verEntrada(Long.valueOf(1)), listaEntradasDTO.get(0));
+		assertEquals(entradasService.getEntradas(Long.valueOf(1)), listaEntradasDTO.get(0));
 		
 	}
 }

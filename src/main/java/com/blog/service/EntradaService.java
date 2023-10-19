@@ -2,21 +2,18 @@ package com.blog.service;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 
 import com.blog.dto.EntradaDTO;
 
 
 public interface EntradaService {
 	
-	ResponseEntity<EntradaDTO> crearEntrada(EntradaDTO entradaDTO);
+	EntradaDTO crearEntrada(EntradaDTO entradaDTO);
 	
-	EntradaDTO verEntrada(Long id);
+	EntradaDTO getEntradas(Long id);
 	
-	List<EntradaDTO> verEntradas();
+	List<EntradaDTO> getEntradas();
 	
 	void eliminarEntrada(Long id);
 	
-	
-
 }

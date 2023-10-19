@@ -9,8 +9,7 @@ import com.blog.modelo.Entrada;
 
 @Mapper(componentModel = "spring")
 public interface EntradaMapper {
-	@Mapping(target = "fechaLocal", ignore = true)
-	@Mapping(target="id", ignore =true)
+	
 	EntradaDTO EntradatoEntradaDTO(Entrada entrada);
 	
 	@Mapping(target = "fechaLocal", ignore = true)
