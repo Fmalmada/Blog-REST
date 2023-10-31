@@ -104,5 +104,22 @@ public class EntradaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    public void cuandoGetdeUnaEntradaMeDevuelveOK() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 1)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+                    
+    }
+
+    @Test
+    public void cuandoGetDeUnaEntradaMeDevuelveLaCorrecta() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 1)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.contenido", is("Contenido de entrada 1")))
+                .andExpect(jsonPath("$.tituloEntrada", is("Titulo de entrada 1")));
+
+    }
     
 }
