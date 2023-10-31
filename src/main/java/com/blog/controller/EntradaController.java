@@ -3,8 +3,10 @@ package com.blog.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +29,9 @@ public class EntradaController {
 
 	@PostMapping
 	public ResponseEntity<EntradaDTO> crearEntrada(@RequestBody EntradaDTO entradaDTO, UriComponentsBuilder uriBuilder) {
-		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand("id");
-		ResponseEntity<EntradaDTO> respuesta = ResponseEntity.created(uriComponents.toUri()).body(entradaService.crearEntrada(entradaDTO));
+		Long idEntrada = entradaService.crearEntrada(entradaDTO);
+		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand(idEntrada);
+		ResponseEntity<EntradaDTO> respuesta = ResponseEntity.created(uriComponents.toUri()).body(entradaDTO);
 		return respuesta;
 	}
 	
@@ -38,14 +41,16 @@ public class EntradaController {
 	}
 	
 	@GetMapping("/{id}")
-	public EntradaDTO verEntrada(@RequestParam long id) {
+	public EntradaDTO verEntrada(@PathVariable long id) {
 		return entradaService.getEntradas(id);
 		
 	}
 
 	@DeleteMapping("/{id}")
-	public void eliminarEntrada(@RequestParam long id) {
+	public  ResponseEntity<Long> eliminarEntrada(@PathVariable long id) {
 		entradaService.eliminarEntrada(id);
+		ResponseEntity<Long> respuesta = ResponseEntity.noContent().build();
+		return respuesta;
 	} 
 
 }

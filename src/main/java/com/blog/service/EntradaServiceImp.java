@@ -20,11 +20,11 @@ public class EntradaServiceImp implements EntradaService {
 	private final EntradaRepository entradasRepo;
 	private final EntradaMapper entradaMapper;
 
-	public EntradaDTO crearEntrada(EntradaDTO entradaDTO) {
+	public Long crearEntrada(EntradaDTO entradaDTO) {
 		Entrada entradaAGuardar = entradaMapper.EntradaDTOtoEntrada(entradaDTO);
 		entradasRepo.save(entradaAGuardar);
 
-		return entradaDTO;
+		return entradaAGuardar.getId();
 	}
 
 	public EntradaDTO getEntradas(Long id) {
@@ -43,6 +43,36 @@ public class EntradaServiceImp implements EntradaService {
 	public void eliminarEntrada(Long id) {
 		entradasRepo.deleteById(id);
 	}
+
+	public EntradaDTO putEntrada(Long id, EntradaDTO entradaDTO) {
+		if (!entradasRepo.existsById(id)) {
+			throw(new RuntimeException("La entrada no existe"));
+		}
+		entradasRepo.save(entradaMapper.EntradaDTOtoEntrada(entradaDTO));
+		return entradaDTO;
+	}
+
+    public EntradaDTO patchEntrada(Long id, EntradaDTO entradaDTO) {
+		
+		Optional<Entrada> entradaOptional = entradasRepo.findById(id);
+		
+		if (!entradaOptional.isPresent()) {
+			throw(new RuntimeException("la entrada no existe"));
+		}
+
+		Entrada entrada = entradaOptional.get();
+
+		if (entradaDTO.getContenido() == null) {
+			entrada.setContenido(entradaDTO.getContenido());
+		}
+
+		if (entradaDTO.getTituloEntrada() == null) {
+			entrada.setTituloEntrada(entradaDTO.getTituloEntrada());
+		}
+
+		entradasRepo.save(entrada);
+        return entradaDTO;
+    }
 
 
 }

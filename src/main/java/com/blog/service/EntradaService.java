@@ -8,12 +8,15 @@ import com.blog.dto.EntradaDTO;
 
 public interface EntradaService {
 	
-	EntradaDTO crearEntrada(EntradaDTO entradaDTO);
+	Long crearEntrada(EntradaDTO entradaDTO);
 	
 	EntradaDTO getEntradas(Long id);
 	
 	List<EntradaDTO> getEntradas();
 	
 	void eliminarEntrada(Long id);
-	
+
+	EntradaDTO putEntrada(Long id, EntradaDTO entradaDTO);
+
+	EntradaDTO patchEntrada(Long id, EntradaDTO entradDTO);
 }
