@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,8 +50,12 @@ public class EntradaController {
 	@DeleteMapping("/{id}")
 	public  ResponseEntity<Long> eliminarEntrada(@PathVariable long id) {
 		entradaService.eliminarEntrada(id);
-		ResponseEntity<Long> respuesta = ResponseEntity.noContent().build();
-		return respuesta;
+		return ResponseEntity.noContent().build();
 	} 
+
+	@PutMapping("/{id}")
+	public ResponseEntity<EntradaDTO> putEntrada(@PathVariable long id, @RequestBody EntradaDTO entradaDTO) {
+		return ResponseEntity.ok().body(entradaService.putEntrada(id, entradaDTO));
+	}
 
 }

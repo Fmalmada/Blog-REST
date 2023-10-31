@@ -121,5 +121,18 @@ public class EntradaControllerTest {
                 .andExpect(jsonPath("$.tituloEntrada", is("Titulo de entrada 1")));
 
     }
+
+    @Test
+    public void cuandoPutUnaEntradaMeDevuelveOK() throws Exception {
+        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+                                    contenido("Contenido de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
+                .content(mapToJSON(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+
     
 }
