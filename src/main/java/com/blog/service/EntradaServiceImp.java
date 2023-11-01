@@ -10,6 +10,7 @@ import com.blog.dto.EntradaDTO;
 import com.blog.mappers.EntradaMapper;
 import com.blog.modelo.Entrada;
 import com.blog.repository.EntradaRepository;
+import com.excepciones.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,7 @@ public class EntradaServiceImp implements EntradaService {
 
 	public EntradaDTO getEntradas(Long id) {
 		Optional<Entrada> entradaOpcional = entradasRepo.findById(id);
-		return entradaMapper.EntradatoEntradaDTO(entradaOpcional.orElseThrow());
+		return entradaMapper.EntradatoEntradaDTO(entradaOpcional.orElseThrow(NotFoundException::new));
 		
 	}
 
@@ -41,12 +42,15 @@ public class EntradaServiceImp implements EntradaService {
 	}
 
 	public void eliminarEntrada(Long id) {
+		if (!entradasRepo.existsById(id)) {
+			throw(new NotFoundException());
+		}
 		entradasRepo.deleteById(id);
 	}
 
 	public EntradaDTO putEntrada(Long id, EntradaDTO entradaDTO) {
 		if (!entradasRepo.existsById(id)) {
-			throw(new RuntimeException("La entrada no existe"));
+			throw(new NotFoundException());
 		}
 		entradasRepo.save(entradaMapper.EntradaDTOtoEntrada(entradaDTO));
 		return entradaDTO;
@@ -57,7 +61,7 @@ public class EntradaServiceImp implements EntradaService {
 		Optional<Entrada> entradaOptional = entradasRepo.findById(id);
 		
 		if (!entradaOptional.isPresent()) {
-			throw(new RuntimeException("la entrada no existe"));
+			throw(new NotFoundException());
 		}
 
 		Entrada entrada = entradaOptional.get();

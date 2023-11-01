@@ -1,5 +1,6 @@
 package com.blog.service;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -22,6 +23,7 @@ import com.blog.dto.EntradaDTO;
 import com.blog.mappers.EntradaMapper;
 import com.blog.modelo.Entrada;
 import com.blog.repository.EntradaRepository;
+import com.excepciones.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class EntradaServiceTest {
@@ -74,6 +76,14 @@ public class EntradaServiceTest {
 	}
 
 	@Test
+	public void conseguirEntradaNotFound() {
+		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.empty());
+		assertThrows(NotFoundException.class, () -> {entradasService.getEntradas(Long.valueOf(1));});
+		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
+
+	}
+
+	@Test
 	public void guardarEntrada() {
 		when(entradasRepo.save(any(Entrada.class))).thenReturn(listaEntradas.get(0));
 		when(entradaMapper.EntradaDTOtoEntrada(any(EntradaDTO.class))).thenReturn(listaEntradas.get(0));
@@ -87,10 +97,19 @@ public class EntradaServiceTest {
 	@Test
 	public void eliminarEntrada() {
 		doNothing().when(entradasRepo).deleteById(any(Long.class));
+		when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+
 		entradasService.eliminarEntrada(Long.valueOf(1));
 
 		verify(entradasRepo, times(1)).deleteById(any(Long.class));
 		
+	}
+
+	@Test
+	public void eliminarEntradaNotFound() {
+	when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
+	assertThrows(NotFoundException.class, () -> {entradasService.eliminarEntrada(Long.valueOf(1));});
+	verify(entradasRepo, times(1)).existsById(any(Long.class));	
 	}
 
 	@Test
@@ -105,6 +124,15 @@ public class EntradaServiceTest {
 
 	}
 
+	@Test  
+	public void PutEntradaNotFound() {
+		when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
+		assertThrows(NotFoundException.class, () -> {entradasService.putEntrada(Long.valueOf(1),listaEntradasDTO.get(0));});
+
+		verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
+	}
+
 	@Test
 	public void patchEntrada() {
 		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(listaEntradas.get(0)));
@@ -113,6 +141,15 @@ public class EntradaServiceTest {
 		assertEquals(entradasService.patchEntrada(Long.valueOf(1), listaEntradasDTO.get(0)),listaEntradasDTO.get(0));
 		verify(entradasRepo, times(1)).save(any(Entrada.class));
 		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
+	}
+
+	@Test
+	public void patchEntradaNotFound() {
+		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.empty());
+
+		assertThrows(NotFoundException.class, () -> {entradasService.patchEntrada(Long.valueOf(1), listaEntradasDTO.get(0));});
+		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
+
 	}
 	
 }
