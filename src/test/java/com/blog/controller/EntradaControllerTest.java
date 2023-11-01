@@ -110,12 +110,39 @@ public class EntradaControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test 
+    public void cuandoEliminoUnaEntradaNoExistenteMeDevuelve404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",777)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void cuandoEliminoUnaEntradaDosVecesMeDevuelve404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        
+         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());        
+    }
+
     @Test
     public void cuandoGetdeUnaEntradaMeDevuelveOK() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 1)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
                     
+    }
+
+    @Test
+    public void cuandoGetDeUnaEntradaNoExistenteDevuelve404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 777)
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -139,6 +166,17 @@ public class EntradaControllerTest {
     }
 
     @Test
+    public void cuandoPutEntradaNoExistenteDevuelve404() throws Exception {
+        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+                                    contenido("Contenido de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}",7777)
+                .content(mapToJSON(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @Transactional
     @Rollback
     public void cuandoPatchDevuelveOK() throws Exception {
@@ -148,6 +186,16 @@ public class EntradaControllerTest {
                 .content(mapToJSON(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void cuandoPatchUnaEntradaNoExistetenteNotFound() throws Exception {
+        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 777)
+                .content(mapToJSON(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 
