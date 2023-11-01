@@ -5,10 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blog.dto.EntradaDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +37,8 @@ public class EntradaControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(unaEntradaDTO);
 
-        }
+    }
+
     @Test
     public void cuandoSeObtienenLasEntradasElEstadoEs200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas")
@@ -99,6 +102,8 @@ public class EntradaControllerTest {
 
 
     @Test
+    @Transactional
+    @Rollback
     public void cuandoEliminoUnaEntradaMeDevuelveNO_CONTENT() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -128,6 +133,18 @@ public class EntradaControllerTest {
                                     contenido("Contenido de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
+                .content(mapToJSON(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void cuandoPatchDevuelveOK() throws Exception {
+        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
                 .content(mapToJSON(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
