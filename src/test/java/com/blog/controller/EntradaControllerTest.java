@@ -173,6 +173,17 @@ public class EntradaControllerTest {
     }
 
     @Test
+    public void cuandoPutUnaEntradaNoValidaDevuelve400() throws Exception {
+         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().
+                                    contenido("Contenido de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
+                .content(mapper.writeValueAsString(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void cuandoPutEntradaNoExistenteDevuelve404() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
                                     contenido("Contenido de ejemplo").build();

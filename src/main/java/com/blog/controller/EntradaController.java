@@ -54,12 +54,12 @@ public class EntradaController {
 	} 
 
 	@PutMapping("/{id}")
-	public ResponseEntity<EntradaPostDTO> putEntrada(@PathVariable long id, @RequestBody EntradaPostDTO entradaDTO) {
+	public ResponseEntity<EntradaPostDTO> putEntrada(@PathVariable long id, @RequestBody @Validated EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.putEntrada(id, entradaDTO));
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<EntradaPostDTO> patchEntrada(@PathVariable long id, @RequestBody EntradaPostDTO entradaDTO) {
+	public ResponseEntity<EntradaPostDTO> patchEntrada(@PathVariable long id, @RequestBody  EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.patchEntrada(id, entradaDTO)); 
 	}
 }
