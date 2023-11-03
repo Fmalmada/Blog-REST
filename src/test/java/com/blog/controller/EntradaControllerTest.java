@@ -32,6 +32,7 @@ public class EntradaControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
     
     private String mapToJSON(EntradaDTO unaEntradaDTO) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
