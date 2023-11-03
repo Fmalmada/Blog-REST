@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.blog.dto.EntradaDTO;
+import com.blog.dto.EntradaPostDTO;
 import com.blog.service.EntradaService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,10 @@ public class EntradaController {
 	private final EntradaService entradaService;
 
 	@PostMapping
-	public ResponseEntity<EntradaDTO> crearEntrada(@RequestBody EntradaDTO entradaDTO, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<EntradaPostDTO> crearEntrada(@RequestBody EntradaPostDTO entradaDTO, UriComponentsBuilder uriBuilder) {
 		Long idEntrada = entradaService.crearEntrada(entradaDTO);
 		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand(idEntrada);
-		ResponseEntity<EntradaDTO> respuesta = ResponseEntity.created(uriComponents.toUri()).body(entradaDTO);
-		return respuesta;
+		return ResponseEntity.created(uriComponents.toUri()).body(entradaDTO);
 	}
 	
 	@GetMapping
@@ -53,12 +53,12 @@ public class EntradaController {
 	} 
 
 	@PutMapping("/{id}")
-	public ResponseEntity<EntradaDTO> putEntrada(@PathVariable long id, @RequestBody EntradaDTO entradaDTO) {
+	public ResponseEntity<EntradaPostDTO> putEntrada(@PathVariable long id, @RequestBody EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.putEntrada(id, entradaDTO));
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<EntradaDTO> patchEntrada(@PathVariable long id, @RequestBody EntradaDTO entradaDTO) {
+	public ResponseEntity<EntradaPostDTO> patchEntrada(@PathVariable long id, @RequestBody EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.patchEntrada(id, entradaDTO)); 
 	}
 }

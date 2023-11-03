@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.blog.dto.EntradaDTO;
+import com.blog.dto.EntradaPostDTO;
 import com.blog.mappers.EntradaMapper;
+import com.blog.mappers.EntradaPostMapper;
 import com.blog.modelo.Entrada;
 import com.blog.repository.EntradaRepository;
 import com.excepciones.NotFoundException;
@@ -20,9 +22,10 @@ public class EntradaServiceImp implements EntradaService {
 	
 	private final EntradaRepository entradasRepo;
 	private final EntradaMapper entradaMapper;
+	private final EntradaPostMapper entradaPostMapper;
 
-	public Long crearEntrada(EntradaDTO entradaDTO) {
-		Entrada entradaAGuardar = entradaMapper.EntradaDTOtoEntrada(entradaDTO);
+	public Long crearEntrada(EntradaPostDTO entradaDTO) {
+		Entrada entradaAGuardar = entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO);
 		entradasRepo.save(entradaAGuardar);
 
 		return entradaAGuardar.getId();
@@ -48,15 +51,15 @@ public class EntradaServiceImp implements EntradaService {
 		entradasRepo.deleteById(id);
 	}
 
-	public EntradaDTO putEntrada(Long id, EntradaDTO entradaDTO) {
+	public EntradaPostDTO putEntrada(Long id, EntradaPostDTO entradaDTO) {
 		if (!entradasRepo.existsById(id)) {
 			throw(new NotFoundException());
 		}
-		entradasRepo.save(entradaMapper.EntradaDTOtoEntrada(entradaDTO));
+		entradasRepo.save(entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO));
 		return entradaDTO;
 	}
 
-    public EntradaDTO patchEntrada(Long id, EntradaDTO entradaDTO) {
+    public EntradaPostDTO patchEntrada(Long id, EntradaPostDTO entradaDTO) {
 		
 		Optional<Entrada> entradaOptional = entradasRepo.findById(id);
 		

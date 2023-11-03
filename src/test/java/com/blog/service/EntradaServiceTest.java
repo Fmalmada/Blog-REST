@@ -20,7 +20,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.blog.dto.EntradaDTO;
+import com.blog.dto.EntradaPostDTO;
 import com.blog.mappers.EntradaMapper;
+import com.blog.mappers.EntradaPostMapper;
 import com.blog.modelo.Entrada;
 import com.blog.repository.EntradaRepository;
 import com.excepciones.NotFoundException;
@@ -34,12 +36,16 @@ public class EntradaServiceTest {
 
 	@Mock
 	private EntradaMapper entradaMapper;
+	@Mock
+	private EntradaPostMapper entradaPostMapper;
 	
 	@InjectMocks
 	private EntradaServiceImp entradasService;
 	
 	private List<Entrada> listaEntradas;
 	private List<EntradaDTO> listaEntradasDTO;
+
+	private List<EntradaPostDTO> listaEntradasPostDTO;
 	
 	@BeforeEach
 	void setUp() {
@@ -53,8 +59,13 @@ public class EntradaServiceTest {
 									.tituloEntrada(unaEntrada.getTituloEntrada())
 									.build();
 		
+		EntradaPostDTO unaEntradaPostDTO = EntradaPostDTO.builder()
+											.tituloEntrada(unaEntrada.getTituloEntrada())
+											.build();
+		
 		listaEntradas = Arrays.asList(unaEntrada);
 		listaEntradasDTO = Arrays.asList(unaEntradaDTo);
+		listaEntradasPostDTO = Arrays.asList(unaEntradaPostDTO);
 	}
 	
 	@Test
@@ -86,11 +97,11 @@ public class EntradaServiceTest {
 	@Test
 	public void guardarEntrada() {
 		when(entradasRepo.save(any(Entrada.class))).thenReturn(listaEntradas.get(0));
-		when(entradaMapper.EntradaDTOtoEntrada(any(EntradaDTO.class))).thenReturn(listaEntradas.get(0));
+		when(entradaPostMapper.EntradaPostDTOtoEntrada(any(EntradaPostDTO.class))).thenReturn(listaEntradas.get(0));
 
-		assertEquals(entradasService.crearEntrada(listaEntradasDTO.get(0)), listaEntradas.get(0).getId());
+		assertEquals(entradasService.crearEntrada(listaEntradasPostDTO.get(0)), listaEntradas.get(0).getId());
 		verify(entradasRepo, times(1)).save(any(Entrada.class));
-		verify(entradaMapper, times(1)).EntradaDTOtoEntrada(any(EntradaDTO.class));
+		verify(entradaPostMapper, times(1)).EntradaPostDTOtoEntrada(any(EntradaPostDTO.class));
 
 	}
 
@@ -116,9 +127,9 @@ public class EntradaServiceTest {
 	public void putEntrada() {
 		when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
 		when(entradasRepo.save(any(Entrada.class))).thenReturn(listaEntradas.get(0));
-		when(entradaMapper.EntradaDTOtoEntrada(any(EntradaDTO.class))).thenReturn(listaEntradas.get(0));
+		when(entradaPostMapper.EntradaPostDTOtoEntrada(any(EntradaPostDTO.class))).thenReturn(listaEntradas.get(0));
 
-		assertEquals(entradasService.putEntrada(Long.valueOf(1),listaEntradasDTO.get(0)), listaEntradasDTO.get(0));
+		assertEquals(entradasService.putEntrada(Long.valueOf(1),listaEntradasPostDTO.get(0)), listaEntradasPostDTO.get(0));
 		verify(entradasRepo, times(1)).save(any(Entrada.class));
 		verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
 
@@ -127,7 +138,7 @@ public class EntradaServiceTest {
 	@Test  
 	public void PutEntradaNotFound() {
 		when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
-		assertThrows(NotFoundException.class, () -> {entradasService.putEntrada(Long.valueOf(1),listaEntradasDTO.get(0));});
+		assertThrows(NotFoundException.class, () -> {entradasService.putEntrada(Long.valueOf(1),listaEntradasPostDTO.get(0));});
 
 		verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
 
@@ -138,7 +149,7 @@ public class EntradaServiceTest {
 		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(listaEntradas.get(0)));
 		when(entradasRepo.save(any(Entrada.class))).thenReturn(listaEntradas.get(0));
 
-		assertEquals(entradasService.patchEntrada(Long.valueOf(1), listaEntradasDTO.get(0)),listaEntradasDTO.get(0));
+		assertEquals(entradasService.patchEntrada(Long.valueOf(1), listaEntradasPostDTO.get(0)),listaEntradasPostDTO.get(0));
 		verify(entradasRepo, times(1)).save(any(Entrada.class));
 		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
 	}
@@ -147,7 +158,7 @@ public class EntradaServiceTest {
 	public void patchEntradaNotFound() {
 		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.empty());
 
-		assertThrows(NotFoundException.class, () -> {entradasService.patchEntrada(Long.valueOf(1), listaEntradasDTO.get(0));});
+		assertThrows(NotFoundException.class, () -> {entradasService.patchEntrada(Long.valueOf(1), listaEntradasPostDTO.get(0));});
 		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
 
 	}

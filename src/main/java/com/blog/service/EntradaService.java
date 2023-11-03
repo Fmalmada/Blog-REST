@@ -4,11 +4,12 @@ import java.util.List;
 
 
 import com.blog.dto.EntradaDTO;
+import com.blog.dto.EntradaPostDTO;
 
 
 public interface EntradaService {
 	
-	Long crearEntrada(EntradaDTO entradaDTO);
+	Long crearEntrada(EntradaPostDTO entradaDTO);
 	
 	EntradaDTO getEntradas(Long id);
 	
@@ -16,7 +17,7 @@ public interface EntradaService {
 	
 	void eliminarEntrada(Long id);
 
-	EntradaDTO putEntrada(Long id, EntradaDTO entradaDTO);
+	EntradaPostDTO putEntrada(Long id, EntradaPostDTO entradaDTO);
 
-	EntradaDTO patchEntrada(Long id, EntradaDTO entradDTO);
+	EntradaPostDTO patchEntrada(Long id, EntradaPostDTO entradDTO);
 }

@@ -11,7 +11,7 @@ public interface EntradaMapper {
 	
 	EntradaDTO EntradatoEntradaDTO(Entrada entrada);
 	
-
+	
 	Entrada EntradaDTOtoEntrada(EntradaDTO entradaDTO);
 
 }
