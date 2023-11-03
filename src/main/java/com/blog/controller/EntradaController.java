@@ -3,6 +3,7 @@ package com.blog.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,7 +30,7 @@ public class EntradaController {
 	private final EntradaService entradaService;
 
 	@PostMapping
-	public ResponseEntity<EntradaPostDTO> crearEntrada(@RequestBody EntradaPostDTO entradaDTO, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<EntradaPostDTO> crearEntrada(@RequestBody @Validated EntradaPostDTO entradaDTO, UriComponentsBuilder uriBuilder) {
 		Long idEntrada = entradaService.crearEntrada(entradaDTO);
 		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand(idEntrada);
 		return ResponseEntity.created(uriComponents.toUri()).body(entradaDTO);

@@ -97,6 +97,16 @@ public class EntradaControllerTest {
 
     }
 
+    @Test
+    public void cuandoGuardoUnaEntradaNoValdiaDevuelve400() throws Exception {
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
+                        .content(mapper.writeValueAsString(unaEntradaDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     @Transactional
