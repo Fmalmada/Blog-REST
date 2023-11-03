@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blog.dto.EntradaDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.blog.dto.EntradaPostDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.MediaType;
@@ -33,12 +32,9 @@ public class EntradaControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper mapper;
     
-    private String mapToJSON(EntradaDTO unaEntradaDTO) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(unaEntradaDTO);
-
-    }
 
     @Test
     public void cuandoSeObtienenLasEntradasElEstadoEs200() throws Exception {
@@ -77,11 +73,11 @@ public class EntradaControllerTest {
 
     @Test
     public void cuandoGuardoUnaEntradaDevuelvoIS_CREATED() throws Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
                                     contenido("Contenido de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-                .content(mapToJSON(unaEntradaDTO))
+                .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
@@ -89,11 +85,11 @@ public class EntradaControllerTest {
 
     @Test
     public void cuandoGuardoUnaEntradaDevuelveUnJson() throws  Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
                                     contenido("Contenido de ejemplo").build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-                        .content(mapToJSON(unaEntradaDTO))
+                        .content(mapper.writeValueAsString(unaEntradaDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .content()
@@ -157,22 +153,22 @@ public class EntradaControllerTest {
 
     @Test
     public void cuandoPutUnaEntradaMeDevuelveOK() throws Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
                                     contenido("Contenido de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
-                .content(mapToJSON(unaEntradaDTO))
+                .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void cuandoPutEntradaNoExistenteDevuelve404() throws Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
                                     contenido("Contenido de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}",7777)
-                .content(mapToJSON(unaEntradaDTO))
+                .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -181,20 +177,20 @@ public class EntradaControllerTest {
     @Transactional
     @Rollback
     public void cuandoPatchDevuelveOK() throws Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
-                .content(mapToJSON(unaEntradaDTO))
+                .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void cuandoPatchUnaEntradaNoExistetenteNotFound() throws Exception {
-        EntradaDTO unaEntradaDTO = EntradaDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 777)
-                .content(mapToJSON(unaEntradaDTO))
+                .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
