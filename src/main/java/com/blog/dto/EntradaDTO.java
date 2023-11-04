@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EntradaDTO {
-	long id;
-	LocalDate fechaLocal;
-	String tituloEntrada;
-	String contenido;
+	private long id;
+	private LocalDate fechaLocal;
+	private String tituloEntrada;
+	private String contenido;
+	private LocalDate fechaActualizacion;
 }

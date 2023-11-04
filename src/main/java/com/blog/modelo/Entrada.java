@@ -3,6 +3,7 @@ package com.blog.modelo;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +25,12 @@ public class Entrada {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long id;
-	String tituloEntrada;
-	String contenido;
+	private long id;
+	private String tituloEntrada;
+	private String contenido;
 	@CreationTimestamp
-	LocalDate fechaLocal;
+	private LocalDate fechaLocal;
+	@UpdateTimestamp
+	private LocalDate fechaActualizacion;
 
 }

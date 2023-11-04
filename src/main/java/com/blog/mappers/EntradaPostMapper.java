@@ -11,6 +11,7 @@ public interface EntradaPostMapper {
     EntradaPostDTO EntradatoEntradaPostDTO(Entrada entrada);
 	
 	@Mapping(target = "fechaLocal", ignore = true)
-	@Mapping(target="id", ignore =true)
+	@Mapping(target="id", ignore = true)
+	@Mapping(target="fechaActualizacion", ignore = true)
 	Entrada EntradaPostDTOtoEntrada(EntradaPostDTO entradaDTO);
 }

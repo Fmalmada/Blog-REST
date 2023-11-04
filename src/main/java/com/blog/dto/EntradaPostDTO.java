@@ -16,9 +16,9 @@ public class EntradaPostDTO {
 
 	@NotBlank
 	@NotNull
-	String tituloEntrada;
+	private String tituloEntrada;
 
 	@NotBlank
 	@NotNull
-	String contenido;
+	private String contenido;
 }
