@@ -13,11 +13,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blog.dto.EntradaPostDTO;
+import com.blog.modelo.Categoria;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -105,6 +109,19 @@ public class EntradaControllerTest {
                         .content(mapper.writeValueAsString(unaEntradaDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void cuandoGuardoUnaEntradaConCategoriasMeDevulveIS_CREATED() throws Exception {
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
+                                    contenido("Contenido de ejemplo")
+                                    .categorias(Set.of(Categoria.builder().nombre("Ejemplo").build()))
+                                    .build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
+                .content(mapper.writeValueAsString(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());                            
     }
 
 

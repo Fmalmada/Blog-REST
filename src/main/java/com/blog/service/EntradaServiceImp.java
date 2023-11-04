@@ -2,7 +2,7 @@ package com.blog.service;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,9 @@ import com.blog.dto.EntradaDTO;
 import com.blog.dto.EntradaPostDTO;
 import com.blog.mappers.EntradaMapper;
 import com.blog.mappers.EntradaPostMapper;
+import com.blog.modelo.Categoria;
 import com.blog.modelo.Entrada;
+import com.blog.repository.CategoriaRepository;
 import com.blog.repository.EntradaRepository;
 import com.excepciones.NotFoundException;
 
@@ -23,9 +25,16 @@ public class EntradaServiceImp implements EntradaService {
 	private final EntradaRepository entradasRepo;
 	private final EntradaMapper entradaMapper;
 	private final EntradaPostMapper entradaPostMapper;
+	private final CategoriaRepository categoriasRepo;
 
 	public Long crearEntrada(EntradaPostDTO entradaDTO) {
 		Entrada entradaAGuardar = entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO);
+
+		Set<Categoria> categorias = entradaAGuardar.getCategorias();
+		if (categorias.size() != 0) {
+			categoriasRepo.saveAll(categorias);
+				}
+
 		entradasRepo.save(entradaAGuardar);
 
 		return entradaAGuardar.getId();

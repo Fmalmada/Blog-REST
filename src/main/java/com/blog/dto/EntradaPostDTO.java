@@ -1,6 +1,10 @@
 package com.blog.dto;
 
 
+import java.util.Set;
+
+import com.blog.modelo.Categoria;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,4 +25,6 @@ public class EntradaPostDTO {
 	@NotBlank
 	@NotNull
 	private String contenido;
+
+	private Set<Categoria> categorias;
 }

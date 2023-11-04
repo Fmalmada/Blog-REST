@@ -1,6 +1,8 @@
 package com.blog.modelo;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,6 +11,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +31,7 @@ public class Entrada {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
 	private String tituloEntrada;
 	private String contenido;
 	@CreationTimestamp
@@ -33,4 +39,9 @@ public class Entrada {
 	@UpdateTimestamp
 	private LocalDate fechaActualizacion;
 
+	@Builder.Default
+	@ManyToMany
+	@JoinTable(name="entrada_categoria", joinColumns = @JoinColumn(name="entrada_id"),
+				inverseJoinColumns= @JoinColumn(name="categoria_id"))
+	private Set<Categoria> categorias = new HashSet<>();
 }
