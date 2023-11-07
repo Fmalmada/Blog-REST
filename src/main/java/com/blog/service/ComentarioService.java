@@ -13,13 +13,13 @@ public interface ComentarioService {
     
     long crearComentario(Long entradaID, ComentarioPostDTO unComentario);
 
-    /*ComentarioDTO getComentario(long id);
+    ComentarioDTO getComentario(long id);
 
-    List<ComentarioDTO> getComentarios();
+    /*List<ComentarioDTO> getComentarios();
 
-    void eliminarEntrada(long id);
+    /*void eliminarEntrada(long id);
 
-    ComentarioPostDTO putEntrada(Long comentarioId,ComentarioPostDTO unComentario);*/
+   /* ComentarioPostDTO putEntrada(Long comentarioId,ComentarioPostDTO unComentario);*/
 
 
 }

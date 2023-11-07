@@ -18,8 +18,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.blog.dto.ComentarioDTO;
 import com.blog.dto.ComentarioPostDTO;
-
+import com.blog.mappers.ComentarioMapper;
 import com.blog.mappers.ComentarioPostMapper;
 
 import com.blog.modelo.Comentario;
@@ -38,19 +39,21 @@ public class ComentarioServiceTest {
 	@Autowired
 	private ComentarioRepository comentariosRepo;
 
-	/*@Mock
-	private EntradaMapper entradaMapper;*/
+	@Mock
+	private ComentarioMapper comentariosMapper;
+
 	@Mock
     @Autowired
 	private ComentarioPostMapper comentarioPostMapper;
 	
 	
 	@InjectMocks
-	private ComentarioServiceImp comentariosService;
+	private ComentarioServiceImp comentarioService;
 	
 	private Entrada entradaPrueba;
     private ComentarioPostDTO comentarioPost;
     private Comentario comentarioPrueba;
+    private ComentarioDTO comentarioDTO;
 
     @BeforeEach
 	void setUp() {
@@ -68,6 +71,10 @@ public class ComentarioServiceTest {
         comentarioPost = ComentarioPostDTO.builder()
                         .contenido("contenido de Ejemplo")
                         .build();
+        
+        comentarioDTO = ComentarioDTO.builder()
+                        .contenido(comentarioPrueba.getContenido())
+                        .build();
 	}
 
     @Test
@@ -81,20 +88,24 @@ public class ComentarioServiceTest {
         when(comentarioPostMapper.map(comentarioPost))
             .thenReturn(comentarioPrueba);
 
-        assertEquals(comentariosService.crearComentario(entradaPrueba.getId(), comentarioPost), 
+        assertEquals(comentarioService.crearComentario(entradaPrueba.getId(), comentarioPost), 
                     comentarioPrueba.getId());
 
         verify(comentariosRepo, times(1)).save(comentarioPrueba);
         verify(comentarioPostMapper, times(1)).map(comentarioPost);
     }
 
-    /*@Test
+    @Test
     public void getComentario() {
         when(comentariosRepo.findById(Long.valueOf(1)))
             .thenReturn(Optional.of(comentarioPrueba));
         
-        when(comentario)
-    }*/
+        when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
+
+        assertEquals(comentarioService.getComentario(Long.valueOf(1)), comentarioDTO);
+        verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+        verify(comentariosMapper, times(1)).map(comentarioPrueba);
+    }
 	
     
 }

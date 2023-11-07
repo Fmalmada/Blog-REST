@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.blog.dto.ComentarioDTO;
 import com.blog.dto.ComentarioPostDTO;
+import com.blog.mappers.ComentarioMapper;
 import com.blog.mappers.ComentarioPostMapper;
 import com.blog.modelo.Comentario;
 import com.blog.modelo.Entrada;
@@ -21,6 +23,7 @@ public class ComentarioServiceImp implements ComentarioService {
     private final ComentarioRepository comentariosRepo;
     private final EntradaRepository entradasRepo;
     private final ComentarioPostMapper comentariosPostMapper;
+    private final ComentarioMapper comentarioMapper;
 
 
     public long crearComentario(Long entradaID, ComentarioPostDTO comentarioPostDTO) {
@@ -31,6 +34,11 @@ public class ComentarioServiceImp implements ComentarioService {
         comentarioAGuardar.setUnaEntrada(entradaAComentar);
         Comentario comentarioGuardado = comentariosRepo.save(comentarioAGuardar);
         return comentarioGuardado.getId();
+    }
+
+
+    public ComentarioDTO getComentario(long id) {
+       return(comentarioMapper.map(comentariosRepo.findById(id).orElseThrow(NotFoundException::new)));
     }
 
 }
