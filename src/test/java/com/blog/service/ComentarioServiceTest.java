@@ -1,6 +1,7 @@
 package com.blog.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,6 +29,7 @@ import com.blog.modelo.Comentario;
 import com.blog.modelo.Entrada;
 import com.blog.repository.ComentarioRepository;
 import com.blog.repository.EntradaRepository;
+import com.excepciones.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class ComentarioServiceTest {
@@ -109,6 +111,17 @@ public class ComentarioServiceTest {
     }
 
     @Test
+    public void getComentarioNotFound() {
+        when(comentariosRepo.findById(Long.valueOf(1)))
+            .thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class,
+                 () ->{comentarioService.getComentario(Long.valueOf(1));});
+
+        verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+    }
+
+    @Test
     public void getComentarios() {
         when(comentariosRepo.findAll()).thenReturn(Arrays.asList(comentarioPrueba));
         when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
@@ -130,6 +143,17 @@ public class ComentarioServiceTest {
     }
 
     @Test
+    public void deleteComentarioNoFound() {
+        when(comentariosRepo.existsById(Long.valueOf(1)))
+            .thenReturn(false);
+
+        assertThrows(NotFoundException.class,
+                 () ->{comentarioService.eliminarComentario(Long.valueOf(1));});
+
+        verify(comentariosRepo, times(1)).existsById(Long.valueOf(1));
+    }
+
+    @Test
     public void putComentario() {
         when(comentariosRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(comentarioPrueba));
 		when(comentariosRepo.save(comentarioPrueba)).thenReturn(comentarioPrueba);
@@ -137,6 +161,17 @@ public class ComentarioServiceTest {
 		assertEquals(comentarioService.putComentario(Long.valueOf(1),comentarioPost), comentarioPost);
 		verify(comentariosRepo, times(1)).save(comentarioPrueba);
 		verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+    }
+
+    @Test
+    public void putComentarioNoFound() {
+        when(comentariosRepo.findById(Long.valueOf(1)))
+            .thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class,
+                 () ->{comentarioService.putComentario(Long.valueOf(1), comentarioPost);});
+
+        verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
     }
 	
     
