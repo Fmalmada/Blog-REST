@@ -15,11 +15,11 @@ public interface ComentarioService {
 
     ComentarioDTO getComentario(long id);
 
-    /*List<ComentarioDTO> getComentarios();
+    List<ComentarioDTO> getComentarios();
 
-    /*void eliminarEntrada(long id);
+    void eliminarComentario(long id);
 
-   /* ComentarioPostDTO putEntrada(Long comentarioId,ComentarioPostDTO unComentario);*/
+    ComentarioPostDTO putComentario(Long comentarioId,ComentarioPostDTO unComentario);
 
 
 }

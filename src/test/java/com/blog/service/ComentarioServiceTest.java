@@ -1,20 +1,21 @@
 package com.blog.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -105,6 +106,37 @@ public class ComentarioServiceTest {
         assertEquals(comentarioService.getComentario(Long.valueOf(1)), comentarioDTO);
         verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
         verify(comentariosMapper, times(1)).map(comentarioPrueba);
+    }
+
+    @Test
+    public void getComentarios() {
+        when(comentariosRepo.findAll()).thenReturn(Arrays.asList(comentarioPrueba));
+        when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
+
+        assertEquals(comentarioService.getComentarios(), Arrays.asList(comentarioDTO));
+        verify(comentariosRepo, times(1)).findAll();
+        verify(comentariosMapper, times(1)).map(comentarioPrueba);
+    }
+
+    @Test
+    public void deleteComentario() {
+        when(comentariosRepo.existsById(Long.valueOf(1))).thenReturn(true);
+        doNothing().when(comentariosRepo).deleteById(Long.valueOf(1));
+
+        comentarioService.eliminarComentario(Long.valueOf(1));
+
+        verify(comentariosRepo,times(1)).existsById(Long.valueOf(1));
+        verify(comentariosRepo, times(1)).deleteById(Long.valueOf(1));
+    }
+
+    @Test
+    public void putComentario() {
+        when(comentariosRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(comentarioPrueba));
+		when(comentariosRepo.save(comentarioPrueba)).thenReturn(comentarioPrueba);
+
+		assertEquals(comentarioService.putComentario(Long.valueOf(1),comentarioPost), comentarioPost);
+		verify(comentariosRepo, times(1)).save(comentarioPrueba);
+		verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
     }
 	
     

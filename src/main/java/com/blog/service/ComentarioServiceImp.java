@@ -1,6 +1,7 @@
 package com.blog.service;
 
-import java.util.Optional;
+
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,35 @@ public class ComentarioServiceImp implements ComentarioService {
 
     public ComentarioDTO getComentario(long id) {
        return(comentarioMapper.map(comentariosRepo.findById(id).orElseThrow(NotFoundException::new)));
+    }
+
+
+    
+    public List<ComentarioDTO> getComentarios() {
+        return comentariosRepo.findAll().stream()
+                .map(unComentario -> comentarioMapper.map(unComentario)).toList();
+    }
+
+
+    @Override
+    public void eliminarComentario(long id) {
+        if (comentariosRepo.existsById(id)) {
+            comentariosRepo.deleteById(id);
+        }
+        else {
+            throw(new NotFoundException());
+        }
+    }
+
+
+    @Override
+    public ComentarioPostDTO putComentario(Long comentarioId, ComentarioPostDTO comentarioDTO) {
+        Comentario comentarioAEditar = comentariosRepo.findById(comentarioId).orElseThrow(NotFoundException::new);
+        comentarioAEditar.setContenido(comentarioDTO.getContenido());
+
+        comentariosRepo.save(comentarioAEditar);
+        return comentarioDTO;
+
     }
 
 }
