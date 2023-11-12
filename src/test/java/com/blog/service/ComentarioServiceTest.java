@@ -8,8 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -96,6 +95,18 @@ public class ComentarioServiceTest {
 
         verify(comentariosRepo, times(1)).save(comentarioPrueba);
         verify(comentarioPostMapper, times(1)).map(comentarioPost);
+        verify(entradasRepo, times(1)).findById(Long.valueOf(1));
+    }
+
+    @Test
+    public void crearComentarioAUnaEntradaQueNoExiste() {
+        when(entradasRepo.findById(Long.valueOf(1))).
+            thenReturn(Optional.empty());
+        
+        assertThrows(NotFoundException.class,
+            () ->{comentarioService.crearComentario(entradaPrueba.getId(), comentarioPost);});
+
+        verify(entradasRepo, times(1)).findById(Long.valueOf(1));
     }
 
     @Test
@@ -105,73 +116,118 @@ public class ComentarioServiceTest {
         
         when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
 
-        assertEquals(comentarioService.getComentario(Long.valueOf(1)), comentarioDTO);
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+
+        assertEquals(comentarioService.getComentario(Long.valueOf(1),Long.valueOf(1)), comentarioDTO);
         verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
         verify(comentariosMapper, times(1)).map(comentarioPrueba);
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
+    }
+
+    @Test
+    public void getComentarioDeUnaEntradaQueNoExiste() {
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
+        
+        assertThrows(NotFoundException.class,
+            () ->{comentarioService.getComentario(Long.valueOf(1), Long.valueOf(1));});
+
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
     }
 
     @Test
     public void getComentarioNotFound() {
         when(comentariosRepo.findById(Long.valueOf(1)))
             .thenReturn(Optional.empty());
+        
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+
 
         assertThrows(NotFoundException.class,
-                 () ->{comentarioService.getComentario(Long.valueOf(1));});
+                 () ->{comentarioService.getComentario(Long.valueOf(1),Long.valueOf(1));});
 
         verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
-    }
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
 
-    @Test
-    public void getComentarios() {
-        when(comentariosRepo.findAll()).thenReturn(Arrays.asList(comentarioPrueba));
-        when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
-
-        assertEquals(comentarioService.getComentarios(), Arrays.asList(comentarioDTO));
-        verify(comentariosRepo, times(1)).findAll();
-        verify(comentariosMapper, times(1)).map(comentarioPrueba);
     }
 
     @Test
     public void deleteComentario() {
         when(comentariosRepo.existsById(Long.valueOf(1))).thenReturn(true);
         doNothing().when(comentariosRepo).deleteById(Long.valueOf(1));
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
 
-        comentarioService.eliminarComentario(Long.valueOf(1));
+
+        comentarioService.eliminarComentario(Long.valueOf(1),Long.valueOf(1));
 
         verify(comentariosRepo,times(1)).existsById(Long.valueOf(1));
         verify(comentariosRepo, times(1)).deleteById(Long.valueOf(1));
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+    }
+
+    @Test
+    public void deleteComentarioDeUnaEntradaQueNoExiste() {
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
+        
+        assertThrows(NotFoundException.class,
+            () ->{comentarioService.eliminarComentario(Long.valueOf(1), Long.valueOf(1));});
+
+            verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
     }
 
     @Test
     public void deleteComentarioNoFound() {
         when(comentariosRepo.existsById(Long.valueOf(1)))
             .thenReturn(false);
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+
 
         assertThrows(NotFoundException.class,
-                 () ->{comentarioService.eliminarComentario(Long.valueOf(1));});
+                 () ->{comentarioService.eliminarComentario(Long.valueOf(1),Long.valueOf(1));});
 
         verify(comentariosRepo, times(1)).existsById(Long.valueOf(1));
+                verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
     }
 
     @Test
     public void putComentario() {
         when(comentariosRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(comentarioPrueba));
 		when(comentariosRepo.save(comentarioPrueba)).thenReturn(comentarioPrueba);
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
 
-		assertEquals(comentarioService.putComentario(Long.valueOf(1),comentarioPost), comentarioPost);
+
+		assertEquals(comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1),comentarioPost), comentarioPost);
 		verify(comentariosRepo, times(1)).save(comentarioPrueba);
 		verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
+    }
+
+    @Test
+    public void putComentarioDeUnaEntradaQueNoExiste() {
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(false);
+        
+        assertThrows(NotFoundException.class,
+            () ->{comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1), comentarioPost);});
+
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+
     }
 
     @Test
     public void putComentarioNoFound() {
         when(comentariosRepo.findById(Long.valueOf(1)))
             .thenReturn(Optional.empty());
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+
 
         assertThrows(NotFoundException.class,
-                 () ->{comentarioService.putComentario(Long.valueOf(1), comentarioPost);});
+                 () ->{comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1), comentarioPost);});
 
         verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+        verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
     }
 	
     

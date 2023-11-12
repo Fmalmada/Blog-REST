@@ -25,6 +25,7 @@ import com.blog.mappers.EntradaMapper;
 import com.blog.mappers.EntradaPostMapper;
 import com.blog.modelo.Entrada;
 import com.blog.repository.CategoriaRepository;
+import com.blog.repository.ComentarioRepository;
 import com.blog.repository.EntradaRepository;
 import com.excepciones.NotFoundException;
 
@@ -38,6 +39,11 @@ public class EntradaServiceTest {
 	@Mock
 	@Autowired
 	private CategoriaRepository categoriaRepo;
+
+	@Mock
+	@Autowired
+	private ComentarioRepository comentariosRepo;
+
 
 	@Mock
 	private EntradaMapper entradaMapper;
@@ -77,7 +83,7 @@ public class EntradaServiceTest {
 	@Test
 	public void conseguirTodasEntradas() {
 		when(entradasRepo.findAll()).thenReturn(listaEntradas);
-		when(entradaMapper.EntradatoEntradaDTO(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
+		when(entradaMapper.map(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
 		assertEquals(entradasService.getEntradas(),listaEntradasDTO);
 
 		verify(entradasRepo, times(1)).findAll();
@@ -87,7 +93,7 @@ public class EntradaServiceTest {
 	@Test
 	public void conseguirEntrada() {
 		when(entradasRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(listaEntradas.get(0)));
-		when(entradaMapper.EntradatoEntradaDTO(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
+		when(entradaMapper.map(any(Entrada.class))).thenReturn(listaEntradasDTO.get(0));
 		assertEquals(entradasService.getEntradas(Long.valueOf(1)), listaEntradasDTO.get(0));
 		verify(entradasRepo, times(1)).findById(Long.valueOf(1));
 	}

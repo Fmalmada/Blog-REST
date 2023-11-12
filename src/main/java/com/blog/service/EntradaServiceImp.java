@@ -42,14 +42,14 @@ public class EntradaServiceImp implements EntradaService {
 
 	public EntradaDTO getEntradas(Long id) {
 		Optional<Entrada> entradaOpcional = entradasRepo.findById(id);
-		return entradaMapper.EntradatoEntradaDTO(entradaOpcional.orElseThrow(NotFoundException::new));
+		return entradaMapper.map(entradaOpcional.orElseThrow(NotFoundException::new));
 		
 	}
 
 	public List<EntradaDTO> getEntradas() {
 		List<Entrada> resultado= entradasRepo.findAll();
 		return resultado.stream()
-						.map(unaEntrada -> entradaMapper.EntradatoEntradaDTO(unaEntrada))
+						.map(unaEntrada -> entradaMapper.map(unaEntrada))
 						.toList();
 	}
 

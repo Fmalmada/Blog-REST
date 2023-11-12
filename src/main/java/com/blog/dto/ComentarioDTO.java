@@ -1,7 +1,6 @@
 package com.blog.dto;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 
 import lombok.AllArgsConstructor;
@@ -19,7 +18,5 @@ public class ComentarioDTO {
     private String contenido; 
 	private LocalDate fechaLocal;	
 	private LocalDate fechaActualizacion;
-    private Set<ComentarioDTO> respuestas;
-    private ComentarioDTO respuestaA;
-    private EntradaDTO unaEntrada;
+    private EntradaDTO entradaId;
 }

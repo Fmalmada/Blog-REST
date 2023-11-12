@@ -12,9 +12,7 @@ public interface ComentarioPostMapper {
     @Mapping(target="fechaActualizacion", ignore=true)
     @Mapping(target="fechaLocal", ignore=true)
     @Mapping(target="id", ignore=true)
-    @Mapping(target="respuestaA", ignore=true)
-    @Mapping(target="unaEntrada", ignore=true)
-    @Mapping(target="respuestas", ignore=true)
+    @Mapping(target="entradaId", ignore=true)
     Comentario map(ComentarioPostDTO comentarioDTO);
     
 }

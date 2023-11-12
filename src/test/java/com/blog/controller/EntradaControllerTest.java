@@ -102,7 +102,7 @@ public class EntradaControllerTest {
     }
 
     @Test
-    public void cuandoGuardoUnaEntradaNoValdiaDevuelve400() throws Exception {
+    public void cuandoGuardoUnaEntradaNoValidaDevuelve400() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().build();
         
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
@@ -146,12 +146,12 @@ public class EntradaControllerTest {
     @Rollback
     public void cuandoEliminoUnaEntradaDosVecesMeDevuelve404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
         
-         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());        
+                .andExpect(status().isNotFound());     
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.blog.service;
 
 
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -13,13 +12,11 @@ public interface ComentarioService {
     
     long crearComentario(Long entradaID, ComentarioPostDTO unComentario);
 
-    ComentarioDTO getComentario(long id);
+    ComentarioDTO getComentario(long entradaId, long id);
 
-    List<ComentarioDTO> getComentarios();
+    void eliminarComentario(long entradaId,long id);
 
-    void eliminarComentario(long id);
-
-    ComentarioPostDTO putComentario(Long comentarioId,ComentarioPostDTO unComentario);
+    ComentarioPostDTO putComentario(Long entradaId,Long comentarioId,ComentarioPostDTO unComentario);
 
 
 }

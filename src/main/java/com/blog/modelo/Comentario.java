@@ -1,7 +1,6 @@
 package com.blog.modelo;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,9 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,18 +36,9 @@ public class Comentario {
 	private LocalDate fechaLocal;
 	@UpdateTimestamp
 	private LocalDate fechaActualizacion;
-    
-    
-    @OneToMany
-    @JoinTable(name="respuestas", joinColumns = @JoinColumn(name="comentario_id"),
-				inverseJoinColumns= @JoinColumn(name="respuesta_id"))
-    private Set<Comentario> respuestas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "respuestaa_id", nullable=true)
-    private Comentario respuestaA;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="entrada_id", nullable=false)
-    private Entrada unaEntrada;
+    private Entrada entradaId;
 }

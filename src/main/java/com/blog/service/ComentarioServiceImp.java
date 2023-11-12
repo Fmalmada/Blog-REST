@@ -1,7 +1,6 @@
 package com.blog.service;
 
 
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -26,32 +25,33 @@ public class ComentarioServiceImp implements ComentarioService {
     private final ComentarioPostMapper comentariosPostMapper;
     private final ComentarioMapper comentarioMapper;
 
+    private void existeEntrada(Long entradaId) {
+        if (!entradasRepo.existsById(entradaId)) {
+            throw(new NotFoundException());
+        }     
+    }
+
 
     public long crearComentario(Long entradaID, ComentarioPostDTO comentarioPostDTO) {
         Entrada entradaAComentar = entradasRepo.findById(entradaID).
                                     orElseThrow(NotFoundException::new);
         
         Comentario comentarioAGuardar = comentariosPostMapper.map(comentarioPostDTO);
-        comentarioAGuardar.setUnaEntrada(entradaAComentar);
+        comentarioAGuardar.setEntradaId(entradaAComentar);
         Comentario comentarioGuardado = comentariosRepo.save(comentarioAGuardar);
         return comentarioGuardado.getId();
     }
 
 
-    public ComentarioDTO getComentario(long id) {
-       return(comentarioMapper.map(comentariosRepo.findById(id).orElseThrow(NotFoundException::new)));
+    public ComentarioDTO getComentario(long entradaId,long id) {
+        existeEntrada(entradaId);                   
+        return(comentarioMapper.map(comentariosRepo.findById(id).orElseThrow(NotFoundException::new)));
     }
-
-
-    
-    public List<ComentarioDTO> getComentarios() {
-        return comentariosRepo.findAll().stream()
-                .map(unComentario -> comentarioMapper.map(unComentario)).toList();
-    }
-
 
     @Override
-    public void eliminarComentario(long id) {
+    public void eliminarComentario(long entradaId, long id) {
+        existeEntrada(entradaId);
+
         if (comentariosRepo.existsById(id)) {
             comentariosRepo.deleteById(id);
         }
@@ -62,7 +62,8 @@ public class ComentarioServiceImp implements ComentarioService {
 
 
     @Override
-    public ComentarioPostDTO putComentario(Long comentarioId, ComentarioPostDTO comentarioDTO) {
+    public ComentarioPostDTO putComentario(Long entradaId, Long comentarioId, ComentarioPostDTO comentarioDTO) {
+         existeEntrada(entradaId);
         Comentario comentarioAEditar = comentariosRepo.findById(comentarioId).orElseThrow(NotFoundException::new);
         comentarioAEditar.setContenido(comentarioDTO.getContenido());
 
