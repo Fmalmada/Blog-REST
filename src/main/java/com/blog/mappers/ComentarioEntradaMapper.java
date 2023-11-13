@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ComentarioEntradaMapper {
     
-    @Mapping(target="entradaId", ignore=true)
+    @Mapping(target="entrada", ignore=true)
     ComentarioDTO map(Comentario comentario);
 }

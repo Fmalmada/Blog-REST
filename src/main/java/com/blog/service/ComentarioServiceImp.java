@@ -37,7 +37,7 @@ public class ComentarioServiceImp implements ComentarioService {
                                     orElseThrow(NotFoundException::new);
         
         Comentario comentarioAGuardar = comentariosPostMapper.map(comentarioPostDTO);
-        comentarioAGuardar.setEntradaId(entradaAComentar);
+        comentarioAGuardar.setEntrada(entradaAComentar);
         Comentario comentarioGuardado = comentariosRepo.save(comentarioAGuardar);
         return comentarioGuardado.getId();
     }

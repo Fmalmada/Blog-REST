@@ -24,9 +24,9 @@ public class BlogConfig {
             Comentario unComentario = Comentario.builder().contenido("UnComentario").build();
 
            
-            unComentario.setEntradaId(listaEntradas.get(0));
+            unComentario.setEntrada(listaEntradas.get(0));
             entradasRepo.saveAll(listaEntradas);
-            unComentario.setEntradaId(listaEntradas.get(0));
+            unComentario.setEntrada(listaEntradas.get(0));
             comentariosRepo.save(unComentario);
   
 

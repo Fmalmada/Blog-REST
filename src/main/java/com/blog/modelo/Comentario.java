@@ -40,5 +40,5 @@ public class Comentario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="entrada_id", nullable=false)
-    private Entrada entradaId;
+    private Entrada entrada;
 }

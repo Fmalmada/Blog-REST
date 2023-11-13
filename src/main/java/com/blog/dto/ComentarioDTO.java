@@ -18,5 +18,5 @@ public class ComentarioDTO {
     private String contenido; 
 	private LocalDate fechaLocal;	
 	private LocalDate fechaActualizacion;
-    private EntradaDTO entradaId;
+    private EntradaDTO entrada;
 }

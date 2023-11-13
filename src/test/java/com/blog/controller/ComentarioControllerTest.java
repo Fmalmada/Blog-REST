@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class ComentarioControllerTest {
     @Autowired

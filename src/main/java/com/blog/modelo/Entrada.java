@@ -48,6 +48,6 @@ public class Entrada {
 	private Set<Categoria> categorias = new HashSet<>();
 
 	@Builder.Default
-	@OneToMany(mappedBy = "entradaId", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Comentario> comentarios = new HashSet<>();
 }
