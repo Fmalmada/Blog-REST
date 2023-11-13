@@ -63,7 +63,7 @@ public class ComentarioServiceImp implements ComentarioService {
 
     @Override
     public ComentarioPostDTO putComentario(Long entradaId, Long comentarioId, ComentarioPostDTO comentarioDTO) {
-         existeEntrada(entradaId);
+        existeEntrada(entradaId);
         Comentario comentarioAEditar = comentariosRepo.findById(comentarioId).orElseThrow(NotFoundException::new);
         comentarioAEditar.setContenido(comentarioDTO.getContenido());
 

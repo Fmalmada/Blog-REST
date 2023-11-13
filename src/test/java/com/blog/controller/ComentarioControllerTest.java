@@ -56,6 +56,16 @@ public class ComentarioControllerTest {
     }
 
     @Test
+    public void crearComentarioNoValido() throws Exception {
+        ComentarioPostDTO unComentario = ComentarioPostDTO.builder().build();
+        mockMvc.perform(MockMvcRequestBuilders.post("/1/comentar")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(mapper.writeValueAsString(unComentario)))
+        .andExpect(status().isBadRequest());
+    
+    }
+
+    @Test
     public void getComentario() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/1/comentario/1")
         .contentType(MediaType.APPLICATION_JSON))
@@ -130,9 +140,15 @@ public class ComentarioControllerTest {
         .content(mapper.writeValueAsString(unComentario)))
         .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void putComentarioNoValido() throws Exception {
+        ComentarioPostDTO unComentario = ComentarioPostDTO.builder().build();
+        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(mapper.writeValueAsString(unComentario)))
+        .andExpect(status().isBadRequest());
     
-
-
-
+    }
    
 }
