@@ -12,7 +12,7 @@ import com.blog.modelo.Comentario;
 import com.blog.modelo.Entrada;
 import com.blog.repository.ComentarioRepository;
 import com.blog.repository.EntradaRepository;
-import com.excepciones.NotFoundException;
+import com.blog.excepciones.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

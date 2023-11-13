@@ -14,7 +14,7 @@ import com.blog.modelo.Categoria;
 import com.blog.modelo.Entrada;
 import com.blog.repository.CategoriaRepository;
 import com.blog.repository.EntradaRepository;
-import com.excepciones.NotFoundException;
+import com.blog.excepciones.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
