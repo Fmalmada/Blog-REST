@@ -2,7 +2,7 @@ package com.blog.dto;
 
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.blog.modelo.Categoria;
@@ -20,10 +20,10 @@ import lombok.Setter;
 
 public class EntradaDTO {
 	private long id;
-	private LocalDate fechaLocal;
+	private LocalDateTime fechaLocal;
 	private String tituloEntrada;
 	private String contenido;
-	private LocalDate fechaActualizacion;
+	private LocalDateTime fechaActualizacion;
 	private Set<Categoria> categorias;
 	private Set<ComentarioDTO> comentarios;
 }

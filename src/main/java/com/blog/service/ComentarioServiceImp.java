@@ -32,14 +32,13 @@ public class ComentarioServiceImp implements ComentarioService {
     }
 
 
-    public long crearComentario(Long entradaID, ComentarioPostDTO comentarioPostDTO) {
+    public ComentarioDTO crearComentario(Long entradaID, ComentarioPostDTO comentarioPostDTO) {
         Entrada entradaAComentar = entradasRepo.findById(entradaID).
                                     orElseThrow(NotFoundException::new);
         
         Comentario comentarioAGuardar = comentariosPostMapper.map(comentarioPostDTO);
         comentarioAGuardar.setEntrada(entradaAComentar);
-        Comentario comentarioGuardado = comentariosRepo.save(comentarioAGuardar);
-        return comentarioGuardado.getId();
+        return(comentarioMapper.map(comentariosRepo.save(comentarioAGuardar)));
     }
 
 
@@ -62,14 +61,12 @@ public class ComentarioServiceImp implements ComentarioService {
 
 
     @Override
-    public ComentarioPostDTO putComentario(Long entradaId, Long comentarioId, ComentarioPostDTO comentarioDTO) {
+    public ComentarioDTO putComentario(Long entradaId, Long comentarioId, ComentarioPostDTO comentarioDTO) {
         existeEntrada(entradaId);
         Comentario comentarioAEditar = comentariosRepo.findById(comentarioId).orElseThrow(NotFoundException::new);
         comentarioAEditar.setContenido(comentarioDTO.getContenido());
 
-        comentariosRepo.save(comentarioAEditar);
-        return comentarioDTO;
-
+        return comentarioMapper.map(comentariosRepo.save(comentarioAEditar));
     }
 
 }

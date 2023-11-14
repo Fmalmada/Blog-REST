@@ -26,10 +26,10 @@ public class ComentarioController {
     private final ComentarioService comentarioService;
 
     @PostMapping("/{entradaId}/comentar")
-    public ResponseEntity<ComentarioPostDTO> crearComentario(@PathVariable long entradaId, @RequestBody @Validated ComentarioPostDTO comentarioPost, UriComponentsBuilder uriBuilder) {
-        Long idComentario = comentarioService.crearComentario(entradaId, comentarioPost);
-		UriComponents uriComponents =  uriBuilder.path(entradaId + "/{id}").buildAndExpand(idComentario);
-        return ResponseEntity.created(uriComponents.toUri()).body(comentarioPost);
+    public ResponseEntity<ComentarioDTO> crearComentario(@PathVariable long entradaId, @RequestBody @Validated ComentarioPostDTO comentarioPost, UriComponentsBuilder uriBuilder) {
+        ComentarioDTO comentario = comentarioService.crearComentario(entradaId, comentarioPost);
+		UriComponents uriComponents =  uriBuilder.path(entradaId + "/{id}").buildAndExpand(comentario.getId());
+        return ResponseEntity.created(uriComponents.toUri()).body(comentario);
     }
 
     @GetMapping("/{entradaId}/comentario/{id}")
@@ -44,7 +44,7 @@ public class ComentarioController {
    }
 
    @PutMapping("/{entradaId}/comentario/{id}")
-   public ResponseEntity<ComentarioPostDTO> putComentario(@PathVariable long entradaId,@PathVariable long id, @RequestBody @Validated ComentarioPostDTO comentarioPost) {
+   public ResponseEntity<ComentarioDTO> putComentario(@PathVariable long entradaId,@PathVariable long id, @RequestBody @Validated ComentarioPostDTO comentarioPost) {
         return ResponseEntity.ok(comentarioService.putComentario(entradaId,id, comentarioPost));
    }
     

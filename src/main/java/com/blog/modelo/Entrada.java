@@ -1,6 +1,6 @@
 package com.blog.modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,9 +37,9 @@ public class Entrada {
 	private String tituloEntrada;
 	private String contenido;
 	@CreationTimestamp
-	private LocalDate fechaLocal;
+	private LocalDateTime fechaLocal;
 	@UpdateTimestamp
-	private LocalDate fechaActualizacion;
+	private LocalDateTime fechaActualizacion;
 
 	@Builder.Default
 	@ManyToMany

@@ -1,6 +1,6 @@
 package com.blog.modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -33,9 +33,9 @@ public class Comentario {
     private String contenido;
 
     @CreationTimestamp
-	private LocalDate fechaLocal;
+	private LocalDateTime fechaLocal;
 	@UpdateTimestamp
-	private LocalDate fechaActualizacion;
+	private LocalDateTime fechaActualizacion;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

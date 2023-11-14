@@ -30,10 +30,10 @@ public class EntradaController {
 	private final EntradaService entradaService;
 
 	@PostMapping
-	public ResponseEntity<EntradaPostDTO> crearEntrada(@RequestBody @Validated EntradaPostDTO entradaDTO, UriComponentsBuilder uriBuilder) {
-		Long idEntrada = entradaService.crearEntrada(entradaDTO);
-		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand(idEntrada);
-		return ResponseEntity.created(uriComponents.toUri()).body(entradaDTO);
+	public ResponseEntity<EntradaDTO> crearEntrada(@RequestBody @Validated EntradaPostDTO entradaDTO, UriComponentsBuilder uriBuilder) {
+		EntradaDTO entrada = entradaService.crearEntrada(entradaDTO);
+		UriComponents uriComponents =  uriBuilder.path("/entradas/{id}").buildAndExpand(entrada.getId());
+		return ResponseEntity.created(uriComponents.toUri()).body(entrada);
 	}
 	
 	@GetMapping
@@ -54,12 +54,12 @@ public class EntradaController {
 	} 
 
 	@PutMapping("/{id}")
-	public ResponseEntity<EntradaPostDTO> putEntrada(@PathVariable long id, @RequestBody @Validated EntradaPostDTO entradaDTO) {
+	public ResponseEntity<EntradaDTO> putEntrada(@PathVariable long id, @RequestBody @Validated EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.putEntrada(id, entradaDTO));
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<EntradaPostDTO> patchEntrada(@PathVariable long id, @RequestBody  EntradaPostDTO entradaDTO) {
+	public ResponseEntity<EntradaDTO> patchEntrada(@PathVariable long id, @RequestBody  EntradaPostDTO entradaDTO) {
 		return ResponseEntity.ok().body(entradaService.patchEntrada(id, entradaDTO)); 
 	}
 }

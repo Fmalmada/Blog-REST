@@ -27,17 +27,16 @@ public class EntradaServiceImp implements EntradaService {
 	private final EntradaPostMapper entradaPostMapper;
 	private final CategoriaRepository categoriasRepo;
 
-	public Long crearEntrada(EntradaPostDTO entradaDTO) {
+	public EntradaDTO crearEntrada(EntradaPostDTO entradaDTO) {
 		Entrada entradaAGuardar = entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO);
 
 		Set<Categoria> categorias = entradaAGuardar.getCategorias();
 		if (categorias.size() != 0) {
 			categoriasRepo.saveAll(categorias);
 				}
-
-		entradasRepo.save(entradaAGuardar);
-
-		return entradaAGuardar.getId();
+		
+		
+		return entradaMapper.map(entradasRepo.save(entradaAGuardar));
 	}
 
 	public EntradaDTO getEntradas(Long id) {
@@ -60,15 +59,14 @@ public class EntradaServiceImp implements EntradaService {
 		entradasRepo.deleteById(id);
 	}
 
-	public EntradaPostDTO putEntrada(Long id, EntradaPostDTO entradaDTO) {
+	public EntradaDTO putEntrada(Long id, EntradaPostDTO entradaDTO) {
 		if (!entradasRepo.existsById(id)) {
 			throw(new NotFoundException());
 		}
-		entradasRepo.save(entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO));
-		return entradaDTO;
+		return entradaMapper.map(entradasRepo.save(entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO)));
 	}
 
-    public EntradaPostDTO patchEntrada(Long id, EntradaPostDTO entradaDTO) {
+    public EntradaDTO patchEntrada(Long id, EntradaPostDTO entradaDTO) {
 		
 		Optional<Entrada> entradaOptional = entradasRepo.findById(id);
 		
@@ -86,8 +84,7 @@ public class EntradaServiceImp implements EntradaService {
 			entrada.setTituloEntrada(entradaDTO.getTituloEntrada());
 		}
 
-		entradasRepo.save(entrada);
-        return entradaDTO;
+		return entradaMapper.map(entradasRepo.save(entrada));
     }
 
 

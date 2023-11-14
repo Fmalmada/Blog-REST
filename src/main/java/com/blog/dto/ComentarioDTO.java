@@ -1,7 +1,6 @@
 package com.blog.dto;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,7 @@ public class ComentarioDTO {
    
 	private long id;
     private String contenido; 
-	private LocalDate fechaLocal;	
-	private LocalDate fechaActualizacion;
+	private LocalDateTime fechaLocal;	
+	private LocalDateTime fechaActualizacion;
     private EntradaDTO entrada;
 }
