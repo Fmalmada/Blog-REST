@@ -83,19 +83,23 @@ public class ComentarioServiceTest {
     public void crearComentario() {
         when(entradasRepo.findById(Long.valueOf(1))).
             thenReturn(Optional.of(entradaPrueba));
+
+        when(comentarioPostMapper.map(comentarioPost))
+            .thenReturn(comentarioPrueba);
         
         when(comentariosRepo.save(comentarioPrueba))
             .thenReturn(comentarioPrueba);
 
-        when(comentarioPostMapper.map(comentarioPost))
-            .thenReturn(comentarioPrueba);
+        when(comentariosMapper.map(comentarioPrueba))
+            .thenReturn(comentarioDTO);
 
         assertEquals(comentarioService.crearComentario(entradaPrueba.getId(), comentarioPost), 
-                    comentarioPrueba.getId());
+                    comentarioDTO);
 
         verify(comentariosRepo, times(1)).save(comentarioPrueba);
         verify(comentarioPostMapper, times(1)).map(comentarioPost);
         verify(entradasRepo, times(1)).findById(Long.valueOf(1));
+        verify(comentariosMapper, times(1)).map(comentarioPrueba);
     }
 
     @Test
@@ -172,7 +176,7 @@ public class ComentarioServiceTest {
         assertThrows(NotFoundException.class,
             () ->{comentarioService.eliminarComentario(Long.valueOf(1), Long.valueOf(1));});
 
-            verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+         verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
 
     }
 
@@ -193,15 +197,19 @@ public class ComentarioServiceTest {
 
     @Test
     public void putComentario() {
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
         when(comentariosRepo.findById(Long.valueOf(1))).thenReturn(Optional.of(comentarioPrueba));
 		when(comentariosRepo.save(comentarioPrueba)).thenReturn(comentarioPrueba);
-        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
+        when(comentariosMapper.map(comentarioPrueba)).thenReturn(comentarioDTO);
 
 
-		assertEquals(comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1),comentarioPost), comentarioPost);
-		verify(comentariosRepo, times(1)).save(comentarioPrueba);
-		verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+		assertEquals(comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1),comentarioPost),
+                     comentarioDTO);
+		
         verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+        verify(comentariosRepo, times(1)).save(comentarioPrueba);
+		verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+        verify(comentariosMapper, times(1)).map(comentarioPrueba);
 
     }
 
@@ -218,17 +226,16 @@ public class ComentarioServiceTest {
 
     @Test
     public void putComentarioNoFound() {
+        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
         when(comentariosRepo.findById(Long.valueOf(1)))
             .thenReturn(Optional.empty());
-        when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
-
-
+        
         assertThrows(NotFoundException.class,
                  () ->{comentarioService.putComentario(Long.valueOf(1), Long.valueOf(1), comentarioPost);});
 
-        verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
         verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
+        verify(comentariosRepo, times(1)).findById(Long.valueOf(1));
+        
     }
-	
-    
+	 
 }
