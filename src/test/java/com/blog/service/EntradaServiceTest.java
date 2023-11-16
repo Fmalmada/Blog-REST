@@ -83,12 +83,12 @@ public class EntradaServiceTest {
 	@Test
 	public void conseguirTodasEntradas() {
 		when(entradasRepo.findAll()).thenReturn(listaEntradas);
-		when(entradaMapper.map(entrada)).thenReturn(entradaDTO);
+		when(entradaMapper.map(listaEntradas)).thenReturn(listaEntradasDTO);
 
 		assertEquals(entradasService.getEntradas(),listaEntradasDTO);
 
 		verify(entradasRepo, times(1)).findAll();
-		verify(entradaMapper, times(1)).map(entrada);
+		verify(entradaMapper, times(1)).map(listaEntradas);
 		
 	}
 

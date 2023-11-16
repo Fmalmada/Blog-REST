@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 
 import static org.mockito.Mockito.when;
 
-
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +51,7 @@ public class ComentarioServiceTest {
 	@InjectMocks
 	private ComentarioServiceImp comentarioService;
 	
-	private Entrada entradaPrueba;
+    private Entrada entradaPrueba;
     private ComentarioPostDTO comentarioPost;
     private Comentario comentarioPrueba;
     private ComentarioDTO comentarioDTO;
@@ -77,6 +76,8 @@ public class ComentarioServiceTest {
         comentarioDTO = ComentarioDTO.builder()
                         .contenido(comentarioPrueba.getContenido())
                         .build();
+
+    
 	}
 
     @Test

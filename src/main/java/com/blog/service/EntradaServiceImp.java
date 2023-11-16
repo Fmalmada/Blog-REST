@@ -46,10 +46,7 @@ public class EntradaServiceImp implements EntradaService {
 	}
 
 	public List<EntradaDTO> getEntradas() {
-		List<Entrada> resultado= entradasRepo.findAll();
-		return resultado.stream()
-						.map(unaEntrada -> entradaMapper.map(unaEntrada))
-						.toList();
+		return entradaMapper.map(entradasRepo.findAll());
 	}
 
 	public void eliminarEntrada(Long id) {
