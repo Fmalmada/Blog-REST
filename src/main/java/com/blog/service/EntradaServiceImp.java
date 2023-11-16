@@ -28,7 +28,7 @@ public class EntradaServiceImp implements EntradaService {
 	private final CategoriaRepository categoriasRepo;
 
 	public EntradaDTO crearEntrada(EntradaPostDTO entradaDTO) {
-		Entrada entradaAGuardar = entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO);
+		Entrada entradaAGuardar = entradaPostMapper.map(entradaDTO);
 
 		Set<Categoria> categorias = entradaAGuardar.getCategorias();
 		if (categorias.size() != 0) {
@@ -63,7 +63,7 @@ public class EntradaServiceImp implements EntradaService {
 		if (!entradasRepo.existsById(id)) {
 			throw(new NotFoundException());
 		}
-		return entradaMapper.map(entradasRepo.save(entradaPostMapper.EntradaPostDTOtoEntrada(entradaDTO)));
+		return entradaMapper.map(entradasRepo.save(entradaPostMapper.map(entradaDTO)));
 	}
 
     public EntradaDTO patchEntrada(Long id, EntradaPostDTO entradaDTO) {

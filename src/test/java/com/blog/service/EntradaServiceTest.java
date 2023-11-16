@@ -117,13 +117,13 @@ public class EntradaServiceTest {
 
 	@Test
 	public void guardarEntrada() {
-		when(entradaPostMapper.EntradaPostDTOtoEntrada(entradaPost)).thenReturn(entrada);
+		when(entradaPostMapper.map(entradaPost)).thenReturn(entrada);
 		when(entradasRepo.save(entrada)).thenReturn(entrada);
 		when(entradaMapper.map(entrada)).thenReturn(entradaDTO);
 
 		assertEquals(entradasService.crearEntrada(entradaPost), entradaDTO);
 
-		verify(entradaPostMapper, times(1)).EntradaPostDTOtoEntrada(entradaPost);
+		verify(entradaPostMapper, times(1)).map(entradaPost);
 		verify(entradasRepo, times(1)).save(entrada);
 		verify(entradaMapper, times(1)).map(entrada);
 
@@ -153,14 +153,14 @@ public class EntradaServiceTest {
 	@Test
 	public void putEntrada() {
 		when(entradasRepo.existsById(Long.valueOf(1))).thenReturn(true);
-		when(entradaPostMapper.EntradaPostDTOtoEntrada(entradaPost)).thenReturn(entrada);
+		when(entradaPostMapper.map(entradaPost)).thenReturn(entrada);
 		when(entradasRepo.save(entrada)).thenReturn(entrada);
 		when(entradaMapper.map(entrada)).thenReturn(entradaDTO);
 			
 		assertEquals(entradasService.putEntrada(Long.valueOf(1),entradaPost), entradaDTO);
 
 		verify(entradasRepo, times(1)).existsById(Long.valueOf(1));
-		verify(entradaPostMapper, times(1)).EntradaPostDTOtoEntrada(entradaPost);
+		verify(entradaPostMapper, times(1)).map(entradaPost);
 		verify(entradasRepo, times(1)).save(entrada);
 		verify(entradaMapper, times(1)).map(entrada);
 	}
