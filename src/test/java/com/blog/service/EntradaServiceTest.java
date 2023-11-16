@@ -59,8 +59,6 @@ public class EntradaServiceTest {
 	private Entrada entrada;
 	private EntradaDTO entradaDTO;
 	private EntradaPostDTO entradaPost;
-
-	private List<EntradaPostDTO> listaEntradasPostDTO;
 	
 	@BeforeEach
 	void setUp() {
@@ -80,7 +78,6 @@ public class EntradaServiceTest {
 		
 		listaEntradas = Arrays.asList(entrada);
 		listaEntradasDTO = Arrays.asList(entradaDTO);
-		listaEntradasPostDTO = Arrays.asList(entradaPost);
 	}
 	
 	@Test
