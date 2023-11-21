@@ -29,6 +29,8 @@ public class ComentarioControllerTest {
     @Autowired
     ObjectMapper mapper;
 
+    @Transactional
+    @Rollback
     @Test
     public void crearComentario() throws Exception{
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
@@ -108,6 +110,8 @@ public class ComentarioControllerTest {
         .andExpect(status().isNotFound());
     }
 
+    @Transactional
+    @Rollback
     @Test
     public void putComentario() throws Exception {
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();

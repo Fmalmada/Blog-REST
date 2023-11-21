@@ -31,7 +31,7 @@ public class ComentarioServiceImp implements ComentarioService {
         }     
     }
 
-
+    
     public ComentarioDTO crearComentario(Long entradaID, ComentarioPostDTO comentarioPostDTO) {
         Entrada entradaAComentar = entradasRepo.findById(entradaID).
                                     orElseThrow(NotFoundException::new);
