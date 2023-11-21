@@ -53,7 +53,7 @@ public class EntradaControllerTest {
         .andExpect(jsonPath("$[1].tituloEntrada", is("Titulo de entrada 2")));
     }
     
-
+    @Rollback
     @Transactional
     @Test
     public void postEntrada() throws Exception {
@@ -94,10 +94,9 @@ public class EntradaControllerTest {
                 .andExpect(status().isCreated());                            
     }
 
-
-    @Test
-    @Transactional
     @Rollback
+    @Transactional
+    @Test
     public void deleteEntrada() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -146,8 +145,8 @@ public class EntradaControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Transactional
     @Rollback
+    @Transactional
     @Test
     public void putEntrada() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
@@ -181,9 +180,9 @@ public class EntradaControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
     @Rollback
+    @Transactional
+    @Test
     public void pathEntrada() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
         
@@ -202,7 +201,5 @@ public class EntradaControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
-
-
-    
+  
 }

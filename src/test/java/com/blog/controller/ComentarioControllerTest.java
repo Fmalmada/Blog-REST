@@ -29,8 +29,8 @@ public class ComentarioControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    @Transactional
     @Rollback
+    @Transactional
     @Test
     public void crearComentario() throws Exception{
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
@@ -86,9 +86,9 @@ public class ComentarioControllerTest {
         .andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
     @Rollback
+    @Transactional
+    @Test
     public void eliminarComentario() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/1/comentario/1")
         .contentType(MediaType.APPLICATION_JSON))
@@ -110,8 +110,8 @@ public class ComentarioControllerTest {
         .andExpect(status().isNotFound());
     }
 
-    @Transactional
     @Rollback
+    @Transactional
     @Test
     public void putComentario() throws Exception {
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
