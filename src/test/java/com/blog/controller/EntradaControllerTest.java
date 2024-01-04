@@ -39,33 +39,35 @@ public class EntradaControllerTest {
             .with(httpBasic("user", "password"))
             .contentType(MediaType.APPLICATION_JSON))
             
-        .andExpect(status().isOk())
+            .andExpect(status().isOk())
 
-        .andExpect(MockMvcResultMatchers
-                        .content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers
+                            .content()
+                            .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 
-        .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$", hasSize(2)))
 
-        .andExpect(jsonPath("$[0].contenido", is("Contenido de entrada 1")))
-        .andExpect(jsonPath("$[0].tituloEntrada", is("Titulo de entrada 1")))
+            .andExpect(jsonPath("$[0].contenido", is("Contenido de entrada 1")))
+            .andExpect(jsonPath("$[0].tituloEntrada", is("Titulo de entrada 1")))
 
-        .andExpect(jsonPath("$[1].contenido", is("Contenido de entrada 2")))
-        .andExpect(jsonPath("$[1].tituloEntrada", is("Titulo de entrada 2")));
+            .andExpect(jsonPath("$[1].contenido", is("Contenido de entrada 2")))
+            .andExpect(jsonPath("$[1].tituloEntrada", is("Titulo de entrada 2")));
     }
 
     @Transactional
     @Test
     public void postEntrada() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
-                                    contenido("Contenido de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                            .tituloEntrada("Titulo de ejemplo")
+                                                            .contenido("Contenido de ejemplo")
+                                                            .build();
         
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-            .with(httpBasic("user", "password"))
-            .content(mapper.writeValueAsString(unaEntradaDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
-            .andExpect(MockMvcResultMatchers
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated())
+                    .andExpect(MockMvcResultMatchers
                         .content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
        
@@ -74,16 +76,15 @@ public class EntradaControllerTest {
     @Transactional
     @Test
     public void postEntradaSinAutorizacion() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
-                                    contenido("Contenido de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo")
+                                                        .contenido("Contenido de ejemplo")
+                                                        .build();
         
-                mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-                                    
-                                    .content(mapper.writeValueAsString(unaEntradaDTO))
-                                    .contentType(MediaType.APPLICATION_JSON))
-                                    .andExpect(status().isUnauthorized());
-                                    
-      
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isUnauthorized());
     }
     
     @Test
@@ -91,88 +92,88 @@ public class EntradaControllerTest {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().build();
         
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-                        .with(httpBasic("user", "password"))
-                        .content(mapper.writeValueAsString(unaEntradaDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest());
     }
 
     @Transactional
     @Test
     public void postEntradaConCategorias() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo post").
-                                    contenido("Contenido de ejemplo post")
-                                    .categorias(Set.of(Categoria.builder().nombre("Ejemplo").build()))
-                                    .build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo post")
+                                                        .contenido("Contenido de ejemplo post")
+                                                        .categorias(Set.of(Categoria.builder().nombre("Ejemplo").build()))
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
-                .with(httpBasic("user", "password"))
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());                            
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated());                            
     }
 
     @Transactional
     @Test
     public void deleteEntrada() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
-                .with(httpBasic("user", "password"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                    .with(httpBasic("user", "password"))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNoContent());
     }
 
     @Transactional
     @Test
     public void deleteEntradaSinAutorizacion() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isUnauthorized());
     }
 
     @Test 
     public void deleteEntradNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",777)
-        .with(httpBasic("user", "password"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                    .with(httpBasic("user", "password"))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound());
     }
 
     @Transactional
     @Test
     public void deleteEntradaDosVeces() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
-        .with(httpBasic("user", "password"))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNoContent());
+                    .with(httpBasic("user", "password"))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNoContent());
         
         mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
-        .with(httpBasic("user", "password"))
+                    .with(httpBasic("user", "password"))
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());     
+                    .andExpect(status().isNotFound());     
     }
 
     @Test
     public void getEntrada() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 1)
-        .with(httpBasic("user", "password"))
+                    .with(httpBasic("user", "password"))
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                    .andExpect(status().isOk())
 
-                .andExpect(MockMvcResultMatchers
+                    .andExpect(MockMvcResultMatchers
                         .content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 
-                .andExpect(jsonPath("$.contenido", is("Contenido de entrada 1")))
-                .andExpect(jsonPath("$.tituloEntrada", is("Titulo de entrada 1")));
-                    
+                    .andExpect(jsonPath("$.contenido", is("Contenido de entrada 1")))
+                    .andExpect(jsonPath("$.tituloEntrada", is("Titulo de entrada 1")));              
     }
 
     @Test
     public void getEntradaNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 777)
-        .with(httpBasic("user", "password"))
+                    .with(httpBasic("user", "password"))
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                    .andExpect(status().isNotFound());
     }
 
     @Transactional
@@ -182,31 +183,34 @@ public class EntradaControllerTest {
                                     contenido("Contenido de ejemplo put").build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
-        .with(httpBasic("user", "password"))
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
     }
 
     @Transactional
     @Test
     public void putEntradaSinAutorizacion() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo Put").
-                                    contenido("Contenido de ejemplo put").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo Put")
+                                                        .contenido("Contenido de ejemplo put")
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void putEntradaNoValida() throws Exception {
-         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().
-                                    contenido("Contenido de ejemplo").build();
+         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .contenido("Contenido de ejemplo")
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
-        .with(httpBasic("user", "password"))
+                .with(httpBasic("user", "password"))
                 .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -214,23 +218,26 @@ public class EntradaControllerTest {
 
     @Test
     public void putEntradaNotFound() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
-                                    contenido("Contenido de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo")
+                                                        .contenido("Contenido de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}",7777)
-        .with(httpBasic("user", "password"))
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound());
     }
 
     @Transactional
     @Test
     public void patchEntrada() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo")
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
-        .with(httpBasic("user", "password"))
+                .with(httpBasic("user", "password"))
                 .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -239,23 +246,27 @@ public class EntradaControllerTest {
     @Transactional
     @Test
     public void patchEntradaSinAutorizacion() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo")
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void patchNotFound() throws Exception {
-        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder()
+                                                        .tituloEntrada("Titulo de ejemplo")
+                                                        .build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 777)
-        .with(httpBasic("user", "password"))
-                .content(mapper.writeValueAsString(unaEntradaDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                    .with(httpBasic("user", "password"))
+                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound());
     }
   
 }
