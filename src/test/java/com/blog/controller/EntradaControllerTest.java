@@ -1,20 +1,13 @@
 package com.blog.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-
-import com.blog.config.SecurityConfig;
 import com.blog.dto.EntradaPostDTO;
 import com.blog.modelo.Categoria;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,17 +30,8 @@ public class EntradaControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-   /*  @Autowired
-    private WebApplicationContext context;
-*/
     @Autowired
     ObjectMapper mapper;
-
-    /*@BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .build();
-    }*/
 
     @Test
     public void getEntradas() throws Exception {
@@ -84,9 +68,24 @@ public class EntradaControllerTest {
             .andExpect(MockMvcResultMatchers
                         .content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-          
+       
     }
 
+    @Transactional
+    @Test
+    public void postEntradaSinAutorizacion() throws Exception {
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").
+                                    contenido("Contenido de ejemplo").build();
+        
+                mockMvc.perform(MockMvcRequestBuilders.post("/entradas")
+                                    
+                                    .content(mapper.writeValueAsString(unaEntradaDTO))
+                                    .contentType(MediaType.APPLICATION_JSON))
+                                    .andExpect(status().isUnauthorized());
+                                    
+      
+    }
+    
     @Test
     public void postEntradaNoValida() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().build();
@@ -120,6 +119,14 @@ public class EntradaControllerTest {
                 .with(httpBasic("user", "password"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+    }
+
+    @Transactional
+    @Test
+    public void deleteEntradaSinAutorizacion() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/{id}",1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test 
@@ -181,6 +188,18 @@ public class EntradaControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Transactional
+    @Test
+    public void putEntradaSinAutorizacion() throws Exception {
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo Put").
+                                    contenido("Contenido de ejemplo put").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/{id}", 1)
+                .content(mapper.writeValueAsString(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
     @Test
     public void putEntradaNoValida() throws Exception {
          EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().
@@ -207,7 +226,7 @@ public class EntradaControllerTest {
 
     @Transactional
     @Test
-    public void pathEntrada() throws Exception {
+    public void patchEntrada() throws Exception {
         EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
         
         mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
@@ -215,6 +234,17 @@ public class EntradaControllerTest {
                 .content(mapper.writeValueAsString(unaEntradaDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Transactional
+    @Test
+    public void patchEntradaSinAutorizacion() throws Exception {
+        EntradaPostDTO unaEntradaDTO = EntradaPostDTO.builder().tituloEntrada("Titulo de ejemplo").build();
+        
+        mockMvc.perform(MockMvcRequestBuilders.patch("/entradas/{id}", 1)
+                .content(mapper.writeValueAsString(unaEntradaDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
