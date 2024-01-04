@@ -47,6 +47,16 @@ public class ComentarioControllerTest {
 
     @Transactional
     @Test
+    public void crearComentarioSinAutorizacion() throws Exception {
+        ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
+        mockMvc.perform(MockMvcRequestBuilders.post("/1/comentar")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(mapper.writeValueAsString(unComentario)))
+        .andExpect(status().isUnauthorized());
+    }
+
+    @Transactional
+    @Test
     public void crearComentarioAUnaEntradaQueNoExiste() throws Exception {
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
         
@@ -55,7 +65,7 @@ public class ComentarioControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(mapper.writeValueAsString(unComentario)))
         .andExpect(status().isNotFound());
-  
+
     }
 
     @Transactional
@@ -105,6 +115,14 @@ public class ComentarioControllerTest {
 
     }
 
+    @Transactional
+    @Test
+    public void eliminarComentarioSinAutorizacion() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/1/comentario/1")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+    }
+
     @Test
     public void eliminarComentarioDeUnaQueNoExiste() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/5/comentario/1")
@@ -131,6 +149,17 @@ public class ComentarioControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(mapper.writeValueAsString(unComentario)))
         .andExpect(status().isOk());
+    }
+
+    @Transactional
+    @Test
+    public void putComentarioSinAutorizacion() throws Exception {
+        ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(mapper.writeValueAsString(unComentario)))
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
