@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.blog.dto.ComentarioDTO;
 import com.blog.dto.ComentarioPostDTO;
@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/entradas/")
 public class ComentarioController {
 
     private final ComentarioService comentarioService;

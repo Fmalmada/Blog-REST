@@ -34,7 +34,7 @@ public class ComentarioControllerTest {
     public void crearComentario() throws Exception{
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().contenido("Contenido de ejemplo").build();
         
-        mockMvc.perform(MockMvcRequestBuilders.post("/1/comentar")
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas/1/comentar")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -51,7 +51,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/1/comentar")
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas/1/comentar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
                 .andExpect(status().isUnauthorized());
@@ -64,7 +64,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
         
-        mockMvc.perform(MockMvcRequestBuilders.post("/5/comentar")
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas/5/comentar")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -76,7 +76,7 @@ public class ComentarioControllerTest {
     public void crearComentarioNoValido() throws Exception {
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/1/comentar")
+        mockMvc.perform(MockMvcRequestBuilders.post("/entradas/1/comentar")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -86,7 +86,7 @@ public class ComentarioControllerTest {
 
     @Test
     public void getComentario() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/1/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -95,7 +95,7 @@ public class ComentarioControllerTest {
 
     @Test
     public void getComentarioDeUnaEntradaQueNoExiste() throws  Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/9/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/9/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -103,7 +103,7 @@ public class ComentarioControllerTest {
 
     @Test
     public void getComentarioQueNoExiste() throws  Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/1/comentario/5")
+        mockMvc.perform(MockMvcRequestBuilders.get("/entradas/1/comentario/5")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -112,7 +112,7 @@ public class ComentarioControllerTest {
     @Transactional
     @Test
     public void eliminarComentario() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/1/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -122,14 +122,14 @@ public class ComentarioControllerTest {
     @Transactional
     @Test
     public void eliminarComentarioSinAutorizacion() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/1/comentario/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void eliminarComentarioDeUnaQueNoExiste() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/5/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/5/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -137,7 +137,7 @@ public class ComentarioControllerTest {
 
     @Test
     public void eliminarComentarioQueNoExiste() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/1/comentario/7")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/entradas/1/comentario/7")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -150,7 +150,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/1/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -164,7 +164,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/1/comentario/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
                 .andExpect(status().isUnauthorized());
@@ -176,7 +176,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/7/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/7/comentario/1")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -189,7 +189,7 @@ public class ComentarioControllerTest {
                                                             .contenido("Contenido de ejemplo")
                                                             .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/7")
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/1/comentario/7")
                 .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(unComentario)))
@@ -200,7 +200,7 @@ public class ComentarioControllerTest {
     public void putComentarioNoValido() throws Exception {
         ComentarioPostDTO unComentario = ComentarioPostDTO.builder().build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/1/comentario/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/entradas/1/comentario/1")
             .with(httpBasic("user", "password"))
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(unComentario)))
