@@ -36,7 +36,6 @@ public class EntradaControllerTest {
     @Test
     public void getEntradas() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas")
-            .with(httpBasic("user", "password"))
             .contentType(MediaType.APPLICATION_JSON))
             
             .andExpect(status().isOk())
@@ -156,7 +155,6 @@ public class EntradaControllerTest {
     @Test
     public void getEntrada() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/{id}", 1)
-                    .with(httpBasic("user", "password"))
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
 
