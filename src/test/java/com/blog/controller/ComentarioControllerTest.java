@@ -87,7 +87,6 @@ public class ComentarioControllerTest {
     @Test
     public void getComentario() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/1/comentario/1")
-                .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.contenido", is("UnComentario"))); 
@@ -96,7 +95,6 @@ public class ComentarioControllerTest {
     @Test
     public void getComentarioDeUnaEntradaQueNoExiste() throws  Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/9/comentario/1")
-                .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -104,7 +102,6 @@ public class ComentarioControllerTest {
     @Test
     public void getComentarioQueNoExiste() throws  Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/entradas/1/comentario/5")
-                .with(httpBasic("user", "password"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
