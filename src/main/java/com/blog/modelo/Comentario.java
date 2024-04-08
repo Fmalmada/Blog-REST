@@ -33,7 +33,7 @@ public class Comentario {
     private String contenido;
 
     @CreationTimestamp
-	private LocalDateTime fechaLocal;
+	private LocalDateTime fechaCreacion;
 	@UpdateTimestamp
 	private LocalDateTime fechaActualizacion;
 

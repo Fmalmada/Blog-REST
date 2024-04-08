@@ -20,7 +20,7 @@ import lombok.Setter;
 
 public class EntradaDTO {
 	private long id;
-	private LocalDateTime fechaLocal;
+	private LocalDateTime fechaCreacion;
 	private String tituloEntrada;
 	private String contenido;
 	private LocalDateTime fechaActualizacion;

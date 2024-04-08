@@ -15,7 +15,7 @@ public class ComentarioDTO {
    
 	private long id;
     private String contenido; 
-	private LocalDateTime fechaLocal;	
+	private LocalDateTime fechaCreacion;	
 	private LocalDateTime fechaActualizacion;
     private EntradaDTO entrada;
 }
